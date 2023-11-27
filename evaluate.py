@@ -46,7 +46,8 @@ import tensorflow as tf
 from model import build_EfficientPose
 from eval.common import evaluate
 
-
+os.environ["LD_LIBRARY_PATH"] = "/home/chris/Data/Projects/py_venv/py37_rnnpose/lib/python3.7/site-packages/nvidia/cuda_runtime/lib"
+# /home/chris/Data/Projects/py_venv/py37_rnnpose/lib/python3.7/site-packages/nvidia/cuda_runtime/lib/libcudart.so.11.0
 def parse_args(args):
     """
     Parse the arguments.

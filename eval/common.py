@@ -48,6 +48,7 @@ from tqdm import tqdm
 
 import cv2
 import progressbar
+import time
 assert(callable(progressbar.progressbar)), "Using wrong progressbar module, install 'progressbar2' instead."
 
 
@@ -95,21 +96,37 @@ def _get_detections(generator, model, score_threshold = 0.05, max_detections = 1
     # Returns
         A list of lists containing the detections for each image in the generator.
     """
+    compute_latency = True
+    data_load_time = []
+    inference_time = []
+    postprocess_time = []
     all_detections = [[None for i in range(generator.num_classes()) if generator.has_label(i)] for j in range(generator.size())]
 
     for i in progressbar.progressbar(range(generator.size()), prefix='Running network: '):
+
+        t0_load = time.time()
         raw_image    = generator.load_image(i)
         image, scale = generator.preprocess_image(raw_image.copy())
         # image, scale = generator.resize_image(image)
         camera_matrix = generator.load_camera_matrix(i)
         camera_input = generator.get_camera_parameter_input(camera_matrix, scale, generator.translation_scale_norm)
+        t1_load = time.time()
+        if compute_latency:
+            data_load_time.append(t1_load - t0_load)
+            # print('load time: ', t1_load - t0_load)
 
         # if keras.backend.image_data_format() == 'channels_first':
         #     image = image.transpose((2, 0, 1))
-
+        t0_inference = time.time()
         # run network
         boxes, scores, labels, rotations, translations = model.predict_on_batch([np.expand_dims(image, axis=0), np.expand_dims(camera_input, axis=0)])[:5]
-        
+        t1_inference = time.time()
+        if compute_latency:
+            inference_time.append(t1_inference - t0_inference)
+            # print('inference time: ', t1_inference - t0_inference)
+
+        t0_postprocess = time.time()
+
         if tf.version.VERSION >= '2.0.0':
             boxes = boxes.numpy()
             scores = scores.numpy()
@@ -140,6 +157,10 @@ def _get_detections(generator, model, score_threshold = 0.05, max_detections = 1
         image_scores     = scores[scores_sort]
         image_labels     = labels[0, indices[scores_sort]]
         image_detections = np.concatenate([image_boxes, np.expand_dims(image_scores, axis=1), np.expand_dims(image_labels, axis=1)], axis=1)
+        t1_postprocess = time.time()
+        if compute_latency:
+            postprocess_time.append(t1_postprocess - t0_postprocess)
+            # print('postprocess time: ', t1_postprocess - t0_postprocess)
 
         if save_path is not None:
             raw_image = cv2.cvtColor(raw_image, cv2.COLOR_RGB2BGR)
@@ -154,7 +175,9 @@ def _get_detections(generator, model, score_threshold = 0.05, max_detections = 1
                 continue
 
             all_detections[i][label] = (image_detections[image_detections[:, -1] == label, :-1], image_rotations[image_detections[:, -1] == label, :], image_translations[image_detections[:, -1] == label, :])
-
+    print('data load time: ', np.mean(data_load_time))
+    print('inference time: ', np.mean(inference_time))
+    print('postprocess time: ', np.mean(postprocess_time))
     return all_detections
 
 

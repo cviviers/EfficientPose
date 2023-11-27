@@ -142,22 +142,27 @@ def run(generator, args):
             annotations = generator.load_annotations(i)
             mask = generator.load_mask(i)
             camera_matrix = generator.load_camera_matrix(i)
+
+            print("Camera matrix: {}".format(camera_matrix))
+
             if len(annotations['labels']) > 0 :
                 # apply random transformations
                 image, annotations = generator.random_transform_group_entry(image, annotations, mask, camera_matrix)
-    
+
                 anchors = anchors_for_shape(image.shape, anchor_params = None)
                 positive_indices, _, max_indices = compute_gt_annotations(anchors[0], annotations['bboxes'])
                 
                 #switch image RGB to BGR again
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    
+
+
                 # draw anchors on the image
                 if args.anchors:
                     draw_boxes(image, anchors[0][positive_indices], (255, 255, 0), thickness=1)
     
                 # draw annotations on the image
                 if args.annotations:
+
                     draw_annotations(image,
                                      annotations,
                                      class_to_bbox_3D = generator.get_bbox_3d_dict(),

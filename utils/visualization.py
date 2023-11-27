@@ -204,6 +204,7 @@ def draw_annotations(image, annotations, class_to_bbox_3D, camera_matrix, color 
             draw_box(image, annotations['bboxes'][i], color = (0, 127, 0))
         caption = '{}'.format(label_to_name(label) if label_to_name else label)
         points_bbox_2D = project_bbox_3D_to_2D(class_to_bbox_3D[annotations["labels"][i]], annotations['rotations'][i, :3], annotations['translations'][i, :], camera_matrix, append_centerpoint = True)
+        print("Points bbox 2D: {}".format(points_bbox_2D))
         draw_bbox_8_2D(image, points_bbox_2D, color = color)
         if draw_name:
             if isinstance(label_to_name, dict):

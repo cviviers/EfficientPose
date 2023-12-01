@@ -40,7 +40,7 @@ from generators.linemod import LineModGenerator
 from generators.occlusion import OcclusionGenerator
 from utils.visualization import draw_annotations, draw_boxes
 from utils.anchors import anchors_for_shape, compute_gt_annotations
-
+import matplotlib.pyplot as plt
 
 def parse_args(args):
     """ Parse the arguments.
@@ -172,11 +172,13 @@ def run(generator, args):
                                      draw_name = args.draw_class_names)
         
                 print("Generator idx: {}".format(i))
-                
-            cv2.imshow('Image', image)
-            if cv2.waitKey() == ord('q'):
-                cv2.destroyAllWindows()
-                return
+            # save image
+            im_name = "test_{}.png".format(i)
+            cv2.imwrite(im_name, image)    
+            # cv2.imshow('Image', image)
+            # if cv2.waitKey() == ord('q'):
+            #     cv2.destroyAllWindows()
+            #     return
 
 
 if __name__ == '__main__':

@@ -160,7 +160,7 @@ class Evaluate(keras.callbacks.Callback):
         translation_diffs_mean = []
         translation_diffs_std = []
         for label, (t_mean, t_std) in translation_diff_metric.items():
-            print('class', self.generator.label_to_name(label), 'with Translation Differences in mm: Mean: {:.4f} and Std: {:.4f}'.format(t_mean, t_std))
+            print('class', self.generator.label_to_name(label), 'with Translation Differences in m: Mean: {:.4f} and Std: {:.4f}'.format(t_mean, t_std))
             translation_diffs_mean.append(t_mean)
             translation_diffs_std.append(t_std)
         self.mean_translation_mean = sum(translation_diffs_mean) / len(translation_diffs_mean)
@@ -209,7 +209,7 @@ class Evaluate(keras.callbacks.Callback):
         transformed_diffs_mean = []
         transformed_diffs_std = []
         for label, (t_mean, t_std) in average_point_distance_error_metric.items():
-            print('class', self.generator.label_to_name(label), 'with Transformed Point Distances in mm: Mean: {:.4f} and Std: {:.4f}'.format(t_mean, t_std))
+            print('class', self.generator.label_to_name(label), 'with Transformed Point Distances in m: Mean: {:.4f} and Std: {:.4f}'.format(t_mean, t_std))
             transformed_diffs_mean.append(t_mean)
             transformed_diffs_std.append(t_std)
         self.mean_transformed_mean = sum(transformed_diffs_mean) / len(transformed_diffs_mean)
@@ -219,7 +219,7 @@ class Evaluate(keras.callbacks.Callback):
         transformed_sym_diffs_mean = []
         transformed_sym_diffs_std = []
         for label, (t_mean, t_std) in average_sym_point_distance_error_metric.items():
-            print('class', self.generator.label_to_name(label), 'with Transformed Symmetric Point Distances in mm: Mean: {:.4f} and Std: {:.4f}'.format(t_mean, t_std))
+            print('class', self.generator.label_to_name(label), 'with Transformed Symmetric Point Distances in m: Mean: {:.4f} and Std: {:.4f}'.format(t_mean, t_std))
             transformed_sym_diffs_mean.append(t_mean)
             transformed_sym_diffs_std.append(t_std)
         self.mean_transformed_sym_mean = sum(transformed_sym_diffs_mean) / len(transformed_sym_diffs_mean)
@@ -229,7 +229,7 @@ class Evaluate(keras.callbacks.Callback):
         mixed_transformed_diffs_mean = []
         mixed_transformed_diffs_std = []
         for label, (t_mean, t_std) in mixed_average_point_distance_error_metric.items():
-            print('class', self.generator.label_to_name(label), 'with Mixed Transformed Point Distances in mm: Mean: {:.4f} and Std: {:.4f}'.format(t_mean, t_std))
+            print('class', self.generator.label_to_name(label), 'with Mixed Transformed Point Distances in m: Mean: {:.4f} and Std: {:.4f}'.format(t_mean, t_std))
             mixed_transformed_diffs_mean.append(t_mean)
             mixed_transformed_diffs_std.append(t_std)
         self.mean_mixed_transformed_mean = sum(mixed_transformed_diffs_mean) / len(mixed_transformed_diffs_mean)
@@ -257,10 +257,10 @@ class Evaluate(keras.callbacks.Callback):
                 #translation
                 summary_value_translation_mean = summary.value.add()
                 summary_value_translation_mean.simple_value = self.mean_translation_mean
-                summary_value_translation_mean.tag = "TranslationErrorMean_in_mm"
+                summary_value_translation_mean.tag = "TranslationErrorMean_in_m"
                 summary_value_translation_std = summary.value.add()
                 summary_value_translation_std.simple_value = self.mean_translation_std
-                summary_value_translation_std.tag = "TranslationErrorStd_in_mm"
+                summary_value_translation_std.tag = "TranslationErrorStd_in_m"
                 #rotation
                 summary_value_rotation_mean = summary.value.add()
                 summary_value_rotation_mean.simple_value = self.mean_rotation_mean
@@ -283,24 +283,24 @@ class Evaluate(keras.callbacks.Callback):
                 #average point distances
                 summary_value_transformed_sym_mean = summary.value.add()
                 summary_value_transformed_sym_mean.simple_value = self.mean_transformed_sym_mean
-                summary_value_transformed_sym_mean.tag = "AverageSymmetricPointDistanceMean_in_mm"
+                summary_value_transformed_sym_mean.tag = "AverageSymmetricPointDistanceMean_in_m"
                 summary_value_transformed_sym_std = summary.value.add()
                 summary_value_transformed_sym_std.simple_value = self.mean_transformed_sym_std
-                summary_value_transformed_sym_std.tag = "AverageSymmetricPointDistanceStd_in_mm"
+                summary_value_transformed_sym_std.tag = "AverageSymmetricPointDistanceStd_in_m"
                 #average point distances
                 summary_value_transformed_mean = summary.value.add()
                 summary_value_transformed_mean.simple_value = self.mean_transformed_mean
-                summary_value_transformed_mean.tag = "AveragePointDistanceMean_in_mm"
+                summary_value_transformed_mean.tag = "AveragePointDistanceMean_in_m"
                 summary_value_transformed_std = summary.value.add()
                 summary_value_transformed_std.simple_value = self.mean_transformed_std
-                summary_value_transformed_std.tag = "AveragePointDistanceStd_in_mm"
+                summary_value_transformed_std.tag = "AveragePointDistanceStd_in_m"
                 #average point distances
                 summary_value_mixed_transformed_mean = summary.value.add()
                 summary_value_mixed_transformed_mean.simple_value = self.mean_mixed_transformed_mean
-                summary_value_mixed_transformed_mean.tag = "MixedAveragePointDistanceMean_in_mm"
+                summary_value_mixed_transformed_mean.tag = "MixedAveragePointDistanceMean_in_m"
                 summary_value_mixed_transformed_std = summary.value.add()
                 summary_value_mixed_transformed_std.simple_value = self.mean_mixed_transformed_std
-                summary_value_mixed_transformed_std.tag = "MixedAveragePointDistanceStd_in_mm"
+                summary_value_mixed_transformed_std.tag = "MixedAveragePointDistanceStd_in_m"
                 
                 self.tensorboard.writer.add_summary(summary, epoch)
             else:
@@ -308,53 +308,53 @@ class Evaluate(keras.callbacks.Callback):
                 tf.summary.scalar("ADD", self.mean_add, epoch)
                 tf.summary.scalar("ADD-S", self.mean_add_s, epoch)
                 tf.summary.scalar("5cm_5degree", self.mean_5cm_5degree, epoch)
-                tf.summary.scalar("TranslationErrorMean_in_mm", self.mean_translation_mean, epoch)
-                tf.summary.scalar("TranslationErrorStd_in_mm", self.mean_translation_std, epoch)
+                tf.summary.scalar("TranslationErrorMean_in_m", self.mean_translation_mean, epoch)
+                tf.summary.scalar("TranslationErrorStd_in_m", self.mean_translation_std, epoch)
                 tf.summary.scalar("RotationErrorMean_in_degree", self.mean_rotation_mean, epoch)
                 tf.summary.scalar("RotationErrorStd_in_degree", self.mean_rotation_std, epoch)
                 tf.summary.scalar("2D_Projection", self.mean_2d_projection, epoch)
                 tf.summary.scalar("Summed_Translation_Rotation_Error", self.mean_translation_mean + self.mean_translation_std + self.mean_rotation_mean + self.mean_rotation_std, epoch)
                 tf.summary.scalar("ADD(-S)", self.mean_mixed_add_and_add_s_metric, epoch)
-                tf.summary.scalar("AverageSymmetricPointDistanceMean_in_mm", self.mean_transformed_sym_mean, epoch)
-                tf.summary.scalar("AverageSymmetricPointDistanceStd_in_mm", self.mean_transformed_sym_std, epoch)
-                tf.summary.scalar("AveragePointDistanceMean_in_mm", self.mean_transformed_mean, epoch)
-                tf.summary.scalar("AveragePointDistanceStd_in_mm", self.mean_transformed_std, epoch)
-                tf.summary.scalar("MixedAveragePointDistanceMean_in_mm", self.mean_mixed_transformed_mean, epoch)
-                tf.summary.scalar("MixedAveragePointDistanceStd_in_mm", self.mean_mixed_transformed_std, epoch)
+                tf.summary.scalar("AverageSymmetricPointDistanceMean_in_m", self.mean_transformed_sym_mean, epoch)
+                tf.summary.scalar("AverageSymmetricPointDistanceStd_in_m", self.mean_transformed_sym_std, epoch)
+                tf.summary.scalar("AveragePointDistanceMean_in_m", self.mean_transformed_mean, epoch)
+                tf.summary.scalar("AveragePointDistanceStd_in_m", self.mean_transformed_std, epoch)
+                tf.summary.scalar("MixedAveragePointDistanceMean_in_m", self.mean_mixed_transformed_mean, epoch)
+                tf.summary.scalar("MixedAveragePointDistanceStd_in_m", self.mean_mixed_transformed_std, epoch)
 
         logs['mAP'] = self.mean_ap
         logs['ADD'] = self.mean_add
         logs['ADD-S'] = self.mean_add_s
         logs['5cm_5degree'] = self.mean_5cm_5degree
-        logs['TranslationErrorMean_in_mm'] = self.mean_translation_mean
-        logs['TranslationErrorStd_in_mm'] = self.mean_translation_std
+        logs['TranslationErrorMean_in_m'] = self.mean_translation_mean
+        logs['TranslationErrorStd_in_m'] = self.mean_translation_std
         logs['RotationErrorMean_in_degree'] = self.mean_rotation_mean
         logs['RotationErrorStd_in_degree'] = self.mean_rotation_std
         logs['2D-Projection'] = self.mean_2d_projection
         logs['Summed_Translation_Rotation_Error'] = self.mean_translation_mean + self.mean_translation_std + self.mean_rotation_mean + self.mean_rotation_std
         logs['ADD(-S)'] = self.mean_mixed_add_and_add_s_metric
-        logs['AveragePointDistanceMean_in_mm'] = self.mean_transformed_mean
-        logs['AveragePointDistanceStd_in_mm'] = self.mean_transformed_std
-        logs['AverageSymmetricPointDistanceMean_in_mm'] = self.mean_transformed_sym_mean
-        logs['AverageSymmetricPointDistanceStd_in_mm'] = self.mean_transformed_sym_std
-        logs['MixedAveragePointDistanceMean_in_mm'] = self.mean_mixed_transformed_mean
-        logs['MixedAveragePointDistanceStd_in_mm'] = self.mean_mixed_transformed_std
+        logs['AveragePointDistanceMean_in_m'] = self.mean_transformed_mean
+        logs['AveragePointDistanceStd_in_m'] = self.mean_transformed_std
+        logs['AverageSymmetricPointDistanceMean_in_m'] = self.mean_transformed_sym_mean
+        logs['AverageSymmetricPointDistanceStd_in_m'] = self.mean_transformed_sym_std
+        logs['MixedAveragePointDistanceMean_in_m'] = self.mean_mixed_transformed_mean
+        logs['MixedAveragePointDistanceStd_in_m'] = self.mean_mixed_transformed_std
 
         if self.verbose == 1:
             print('mAP: {:.4f}'.format(self.mean_ap))
             print('ADD: {:.4f}'.format(self.mean_add))
             print('ADD-S: {:.4f}'.format(self.mean_add_s))
             print('5cm_5degree: {:.4f}'.format(self.mean_5cm_5degree))
-            print('TranslationErrorMean_in_mm: {:.4f}'.format(self.mean_translation_mean))
-            print('TranslationErrorStd_in_mm: {:.4f}'.format(self.mean_translation_std))
+            print('TranslationErrorMean_in_m: {:.4f}'.format(self.mean_translation_mean))
+            print('TranslationErrorStd_in_m: {:.4f}'.format(self.mean_translation_std))
             print('RotationErrorMean_in_degree: {:.4f}'.format(self.mean_rotation_mean))
             print('RotationErrorStd_in_degree: {:.4f}'.format(self.mean_rotation_std))
             print('2D-Projection: {:.4f}'.format(self.mean_2d_projection))
             print('Summed_Translation_Rotation_Error: {:.4f}'.format(self.mean_translation_mean + self.mean_translation_std + self.mean_rotation_mean + self.mean_rotation_std))
             print('ADD(-S): {:.4f}'.format(self.mean_mixed_add_and_add_s_metric))
-            print('AveragePointDistanceMean_in_mm: {:.4f}'.format(self.mean_transformed_mean))
-            print('AveragePointDistanceStd_in_mm: {:.4f}'.format(self.mean_transformed_std))
-            print('AverageSymmetricPointDistanceMean_in_mm: {:.4f}'.format(self.mean_transformed_sym_mean))
-            print('AverageSymmetricPointDistanceStd_in_mm: {:.4f}'.format(self.mean_transformed_sym_std))
-            print('MixedAveragePointDistanceMean_in_mm: {:.4f}'.format(self.mean_mixed_transformed_mean))
-            print('MixedAveragePointDistanceStd_in_mm: {:.4f}'.format(self.mean_mixed_transformed_std))
+            print('AveragePointDistanceMean_in_m: {:.4f}'.format(self.mean_transformed_mean))
+            print('AveragePointDistanceStd_in_m: {:.4f}'.format(self.mean_transformed_std))
+            print('AverageSymmetricPointDistanceMean_in_m: {:.4f}'.format(self.mean_transformed_sym_mean))
+            print('AverageSymmetricPointDistanceStd_in_m: {:.4f}'.format(self.mean_transformed_sym_std))
+            print('MixedAveragePointDistanceMean_in_m: {:.4f}'.format(self.mean_mixed_transformed_mean))
+            print('MixedAveragePointDistanceStd_in_m: {:.4f}'.format(self.mean_mixed_transformed_std))

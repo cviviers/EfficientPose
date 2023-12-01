@@ -289,7 +289,7 @@ def create_callbacks(training_model, prediction_model, validation_generator, arg
         callbacks.append(checkpoint)
 
     callbacks.append(keras.callbacks.ReduceLROnPlateau(
-        monitor    = 'MixedAveragePointDistanceMean_in_mm',
+        monitor    = 'MixedAveragePointDistanceMean_in_m',
         factor     = 0.5,
         patience   = 25,
         verbose    = 1,
